@@ -19,6 +19,7 @@ from pages.utils.constants import (
     COLOR_MAP, COLOR_DICT_ESTABELECIMENTOS, COLOR_DICT_MOBILITY,
 )
 
+
 ### PAGE CONFIG ###
 st.set_page_config(layout="wide")
 
@@ -66,7 +67,6 @@ def carregar_dados_ITBI(directory_path):
     transacoes['Número'] = transacoes['Número'].apply(lambda x: x.split('.')[0])
     transacoes['Data de Transação'] = pd.to_datetime(transacoes['Data de Transação'], errors='coerce')
     return transacoes
-
 @st.cache_data
 def cache(dataframe):
     return dataframe
@@ -78,8 +78,8 @@ tabela_ITBI = encontrar_arquivo('tabela_filtros_ITBI_finalizada.csv')
 dados_ITBI = pd.read_csv(tabela_ITBI, dtype={'SQL': 'str'})
 dados_ITBI['Data de Transação'] = pd.to_datetime(dados_ITBI['Data de Transação'], errors='coerce')
 dados_ITBI = carregar_dados_ITBI(encontrar_arquivo('dados_ITBI.csv'))
-
-licencas = cache(pd.read_excel(encontrar_arquivo('licencas e alvaras.xlsx')))
+# licencas = cache(pd.read_excel(encontrar_arquivo('licencas e alvaras.xlsx')))
+licencas = cache(pd.read_csv(encontrar_arquivo('licencas e alvaras.csv')))
 licencas['combinado'] = licencas['SQL_Incra'].str.replace(r'[.-]', '', regex=True)
 
 # Initialize map_selection_df
@@ -181,6 +181,8 @@ with st.sidebar:
         else:
             dados_ITBI_filtrados = pd.DataFrame()
 
+        
+
 
 
 
@@ -246,7 +248,6 @@ def get_df_from_selected_point(event):
                         'Area': [customdata[1]]
                     })
                     sel_lote = pd.concat([sel_lote, new_row], ignore_index=True)
-
     return sel_lote
 
 #with col2:
@@ -413,6 +414,3 @@ with col4:
             unsafe_allow_html=True,
         )
     
-
-        
-
