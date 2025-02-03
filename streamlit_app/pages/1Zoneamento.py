@@ -14,6 +14,7 @@ from Search.Search_Archives import encontrar_arquivo
 from Search.Search_Diretory import encontrar_diretorio
 from pages.utils.principal import get_dfs_from_selected_points, filter_estabelecimentos_by_distance, filter_mobility_points_by_distance
 from pages.utils.utils import load_geojson, convert_to_int, load_all_xlsx_in_directory, categorizar_estabelecimento, load_mobility_data
+from pages.utils.utils import load_all_csv_in_directory, load_mobility_data_csv
 from pages.utils.constants import (
     DISTRITOS_CENTRO, DISTRITOS_LESTE, DISTRITOS_NORTE, DISTRITOS_OESTE, DISTRITOS_SUL,
     COLOR_MAP, COLOR_DICT_ESTABELECIMENTOS, COLOR_DICT_MOBILITY, LINE_COLORS, LINE_MOBILITIES
@@ -50,7 +51,8 @@ sp_distritos = load_geojson(distritos)
 
 #Ler dados de mobilidade
 # Configuração dos diretórios
-xlsx_directory = encontrar_diretorio('mobilidade_ponto')
+# xlsx_directory = encontrar_diretorio('mobilidade_ponto')
+csv_directory = encontrar_diretorio('mobilidade_ponto')
 geojson_directory = encontrar_diretorio('mobilidade_linha_linestring')
 geojson_files = [
     'Ferrovia mdc.geojson',
@@ -61,9 +63,11 @@ geojson_files = [
 ]
 
 # Carregar dados de mobilidade
-mobilidade = load_mobility_data(xlsx_directory, geojson_directory, geojson_files)
+# mobilidade = load_mobility_data(xlsx_directory, geojson_directory, geojson_files)
+mobilidade = load_mobility_data_csv(csv_directory, geojson_directory, geojson_files)
 # Dados de mobilidade plotaveis nos graficos
-mobilidade_analisavel = load_all_xlsx_in_directory(xlsx_directory)
+# mobilidade_analisavel = load_all_xlsx_in_directory(xlsx_directory)
+mobilidade_analisavel = load_all_csv_in_directory(csv_directory)
 mobilidade_analisavel = cache(mobilidade_analisavel)
 
 # Lookup zonas fora de operacao urbana NORTIS
@@ -468,3 +472,4 @@ if distritos_filtrados:
 
     # Exibindo o DataFrame pivotado
         st.write(df_pivot[distritos_filtrados])
+
