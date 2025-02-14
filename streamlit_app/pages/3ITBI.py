@@ -76,7 +76,7 @@ sp_distritos = load_geojson(distritos)
 
 tabela_ITBI = encontrar_arquivo('tabela_filtros_ITBI_finalizada.csv')
 dados_ITBI = pd.read_csv(tabela_ITBI, dtype={'SQL': 'str'})
-dados_ITBI['Data de Transação'] = pd.to_datetime(dados_ITBI['Data de Transação'], errors='coerce')
+dados_ITBI['Data de Transação'] = pd.to_datetime(dados_ITBI['Data de Transação'], dayfirst=True, errors='coerce')
 dados_ITBI = carregar_dados_ITBI(encontrar_arquivo('dados_ITBI.csv'))
 # licencas = cache(pd.read_excel(encontrar_arquivo('licencas e alvaras.xlsx')))
 licencas = cache(pd.read_csv(encontrar_arquivo('licencas e alvaras.csv')))
@@ -214,7 +214,7 @@ if not distritos_filtrados.empty and not dados_ITBI_filtrados.empty:
     fig = plot_borders(gdf_distritos_f, fig, mapbox_style=mapbox_style)
     # map height
     fig.update_layout(height=600)
-    event = st.plotly_chart(fig, on_select="rerun", selection_mode=["points", "box", "lasso"], id="map_main")
+    event = st.plotly_chart(fig, on_select="rerun", selection_mode=["points", "box", "lasso"], id="map_main", config={'scrollZoom': True})
 
 
 def get_df_from_selected_point(event):
