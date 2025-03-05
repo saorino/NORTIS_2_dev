@@ -392,7 +392,7 @@ if distritos_filtrados:
             y=0.99,
             xanchor="left",
             x=0.84,
-            bgcolor="rgba(10, 10, 20, 0.6)",  # Fundo semi-transparente
+            bgcolor="rgba(256, 256, 256, 0.9)",  # Fundo semi-transparente
             bordercolor="rgba(0, 0, 0, 0.3)",    # Borda suave
             borderwidth=1,
             title="",
