@@ -159,13 +159,25 @@ with st.sidebar:
         
         if regiao_filtrada and len(distritos_possiveis) >= 2:
             df_renda = df_renda[df_renda['Distritos'].isin(distritos_possiveis)]
-            renda = st.slider('Faixa de renda', 
-                              min_value=min(df_renda['Renda Média'].to_list()), 
-                              max_value=max(df_renda['Renda Média'].to_list()), 
-                              value=(min(df_renda['Renda Média']), max(df_renda['Renda Média'])))
-        
-            df_renda = df_renda[df_renda['Renda Média'].between(renda[0],renda[1])]
-            distritos_renda = df_renda['Distritos'].to_list()
+            renda_ranges = {
+                'Baixa': (0, 5000),
+                'Média': (5000, 10000),
+                'Média alta': (10000, 15000),
+                'Alta': (15000, float('inf'))
+            }
+            renda_selecionada = st.multiselect('Faixa de renda', list(renda_ranges.keys()), default=list(renda_ranges.keys()))
+            faixas_selecionadas = [renda_ranges[renda] for renda in renda_selecionada]
+
+            # Filtrar os distritos cuja Renda Média esteja dentro de qualquer uma das faixas selecionadas
+            df_renda_filtrada = pd.DataFrame(columns=['Distritos'])
+            if faixas_selecionadas:
+                for faixa in faixas_selecionadas:
+                    renda_min, renda_max = faixa
+                    df_renda_filtrada = pd.concat([df_renda_filtrada, df_renda[df_renda['Renda Média'].between(renda_min, renda_max)]])
+                # Remover duplicatas
+                df_renda_filtrada = df_renda_filtrada.drop_duplicates()
+
+            distritos_renda = df_renda_filtrada['Distritos'].to_list()
             distritos_possiveis = list(set(distritos_renda).intersection(distritos_possiveis))
 
             if len(distritos_possiveis) >=2 :
