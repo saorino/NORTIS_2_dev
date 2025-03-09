@@ -56,14 +56,14 @@ with st.sidebar:
     # Title
     st.title("Página de Análise de Mercado Imobiliário")
     st.subheader("Clique em um ponto para ver os detalhes")
-    # Slider
-    distancia = st.slider("Distância em metros", min_value=100, max_value=3000, value=2000, step=100)
     # Campo de entrada para o endereço
     endereco = st.text_input("Digite o endereço:")
+    # Slider
+    distancia = st.slider("Distância em metros", min_value=100, max_value=3000, value=2000, step=100)
+    # Escolha do ano da pesquisa
+    ano_pesquisa = st.sidebar.multiselect('Ano de lançamento', ['2020', '2021', '2022', '2023', '2024'], default=['2020', '2021', '2022', '2023', '2024'])
     # Escolha do tipo de mapa
     mapbox_style = st.sidebar.selectbox('Estilo do Mapa', ['open-street-map', 'carto-positron', 'carto-darkmatter', 'satellite-streets', 'satellite'])
-    # Escolha do ano da pesquisa
-    ano_pesquisa = st.sidebar.multiselect('Ano da pesquisa', ['2020', '2021', '2022', '2023', '2024'], default=['2020', '2021', '2022', '2023', '2024'])
 
     # Toggle e seleção de mobilidade
     toggle_mobility = st.toggle("Mostrar Mobilidade", value=False)
@@ -132,6 +132,17 @@ fig.update_layout(
     map=dict(
         center=dict(lat=coordenadas[0], lon=coordenadas[1]),
         zoom=14
+    ),
+    showlegend = True,
+    legend=dict(
+            yanchor="top",
+            y=0.99,
+            xanchor="left",
+            x=0.84,
+            bgcolor="rgba(256, 256, 256, 0.9)",  # Fundo semi-transparente
+            bordercolor="rgba(0, 0, 0, 0.3)",    # Borda suave
+            borderwidth=1,
+            title="",
     )
 )
 
